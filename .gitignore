@@ -1,2 +1,3 @@
 clock-in/
 node_modules/
+.env
