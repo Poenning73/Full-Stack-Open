@@ -77,20 +77,26 @@ const App = () => {
             setNewNumber('')
             showNotification(`Replaced ${currentPerson.name} with ${newPerson.name}`, true)
           })
-          .catch(() => {
-            showNotification(`Information of ${currentPerson.name} has alredy been removed from server!`, false)
+          .catch(error => {
+            console.log(error.response.data)
+            showNotification(error.response.data.error, false)
             setPersons(persons.filter(person => person !== currentPerson))
           })
       }
       return
     }
 
-    contactService.create(newPerson)
+    contactService
+      .create(newPerson)
       .then(newPerson => {
         setPersons(persons.concat(newPerson))
         setNewName('')
         setNewNumber('')
         showNotification(`Added ${newPerson.name}`, true)
+      })
+      .catch(error => {
+        console.log(error.response.data)
+        showNotification(error.response.data.error, false)
       })
   }
 
@@ -101,6 +107,10 @@ const App = () => {
         .then(() => {
           setPersons(persons.filter(person => person !== personToDelete))
           showNotification(`Removed ${personToDelete.name}`, true)
+        })
+        .catch(error => {
+          console.log(error.response.data)
+          showNotification(error.response.data.error, false)
         })
     }  
   }
